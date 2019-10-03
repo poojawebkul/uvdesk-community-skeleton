@@ -361,7 +361,9 @@ class InstallationWizardXHR extends Controller
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+
         $routesFilePath = $this->getParameter('kernel.project_dir') . '/config/routes/uvdesk.yaml';
+        
         if (preg_match("/uvdesk_support_center_bundle_use_locale/", \file_get_contents($routesFilePath)) === 0) {
            $route = "\nuvdesk_support_center_bundle_use_locale:\n" .
                     "    path: /\n" .
@@ -369,8 +371,10 @@ class InstallationWizardXHR extends Controller
                     "    defaults:\n" .
                     "        path: /en/\n" .
                     "        permanent: true\n";
+            
             file_put_contents($routesFilePath, $route, FILE_APPEND);
-        }     
+        }
+
         try {
             $collectionURL = $this->get('uvdesk.service')->updateWebsitePrefixes(
                 $_SESSION['PREFIXES_DETAILS']['member'],
